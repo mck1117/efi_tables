@@ -12,6 +12,11 @@ protected:
     {
         Sensor::ResetRegistry();
     }
+
+    void TearDown() override
+    {
+        Sensor::ResetRegistry();
+    }
 };
 
 TEST_F(SensorBasic, Registry)
