@@ -10,6 +10,7 @@ target_sources(tests
         TestTable2dRatio.cpp
         TestTableBins.cpp
         TestSensorBasic.cpp
+        TestConverterSensor.cpp
 
         mock/mock_sensor.h
 )
