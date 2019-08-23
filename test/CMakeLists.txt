@@ -7,6 +7,7 @@ target_sources(tests
     PRIVATE
         TestInterpolate.cpp
         TestTable2d.cpp
+        TestTable2dRatio.cpp
         TestTableBins.cpp
 )
 
