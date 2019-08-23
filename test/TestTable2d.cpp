@@ -1,5 +1,5 @@
-#include <efi/table2d.h>
-#include <efi/table_bin_array.h>
+#include <efi/table/table2d.h>
+#include <efi/table/table_bin_array.h>
 
 #include <gtest/gtest.h>
 

@@ -25,7 +25,7 @@ public:
         , m_values(values)
     {
     }
-    
+
     float operator()(float x) const override
     {
         BinResult b = m_bins->Get(x);

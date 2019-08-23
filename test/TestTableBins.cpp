@@ -1,4 +1,4 @@
-#include <efi/table_bin_array.h>
+#include <efi/table/table_bin_array.h>
 
 #include <memory>
 

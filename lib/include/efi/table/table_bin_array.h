@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <efi/table_bin.h>
+#include <efi/table/table_bin.h>
 #include <efi/interpolate.h>
 
 #include <efi/ratio_helper.h>
