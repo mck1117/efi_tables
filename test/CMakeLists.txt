@@ -9,6 +9,9 @@ target_sources(tests
         TestTable2d.cpp
         TestTable2dRatio.cpp
         TestTableBins.cpp
+        TestSensorBasic.cpp
+
+        mock/mock_sensor.h
 )
 
 target_link_libraries(tests lib gtest gtest_main)

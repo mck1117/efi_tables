@@ -1,0 +1,34 @@
+#pragma once
+
+#include <efi/sensor/sensor.h>
+
+class StoredValueSensor : public Sensor
+{
+public:
+    SensorResult Get() const final
+    {
+        bool valid = m_isValid;
+        float value = m_value;
+
+        return { valid, value };
+    }
+
+protected:
+    StoredValueSensor(SensorType type) : Sensor(type) {}
+
+    void Invalidate()
+    {
+        m_isValid = false;
+    }
+
+    void SetValidValue(float value)
+    {
+        // Set value before valid - so we don't briefly have the valid bit set on an invalid value
+        m_value = value;
+        m_isValid = true;
+    }
+
+private:
+    bool m_isValid = false;
+    float m_value = 0.0f;
+};
