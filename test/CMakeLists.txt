@@ -11,6 +11,7 @@ target_sources(tests
         TestTableBins.cpp
         TestSensorBasic.cpp
         TestConverterSensor.cpp
+        TestFunctionPointerSensor.cpp
 
         mock/mock_sensor.h
 )
