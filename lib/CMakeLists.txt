@@ -17,6 +17,7 @@ target_sources(lib
 
         include/efi/sensor/sensor.h
         include/efi/sensor/sensor_type.h
+        include/efi/sensor/sensor_reader.h
         include/efi/sensor/stored_value_sensor.h
         include/efi/sensor/converter_sensor.h
         include/efi/sensor/function_pointer_sensor.h
