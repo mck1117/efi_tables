@@ -18,16 +18,16 @@ public:
     // Returns true if registration succeeded, or false if there was an error.
     bool Register();
 
-    // Remove all sensors from the sensor registry
+    // Remove all sensors from the sensor registry - tread carefully if you use this outside of a unit test
     static void ResetRegistry();
 
     /*
-     * Static helpers for sensor lookup/getting
+     * Static helper for sensor lookup
      */
-    static const Sensor* GetSensorOfType(SensorType type);    
+    static const Sensor* GetSensorOfType(SensorType type);
 
     /*
-     * Get the reading provided by the specified sensor.
+     * Get a reading from the specified sensor.
      */
     static SensorResult Get(SensorType type);
 
@@ -40,11 +40,13 @@ protected:
 private:
     SensorType m_type;
 
+    // Get this sensor's index in the list
     constexpr size_t GetIndex()
     {
         return GetIndex(m_type);
     }
 
+    // Get the index in the list for a sensor of particular type
     static constexpr size_t GetIndex(SensorType type)
     {
         return static_cast<size_t>(type);

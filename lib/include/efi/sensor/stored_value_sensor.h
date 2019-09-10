@@ -16,11 +16,13 @@ public:
 protected:
     StoredValueSensor(SensorType type) : Sensor(type) {}
 
+    // Invalidate the stored value.
     void Invalidate()
     {
         m_isValid = false;
     }
 
+    // A new reading is available: set and validate a new value for the sensor.
     void SetValidValue(float value)
     {
         // Set value before valid - so we don't briefly have the valid bit set on an invalid value

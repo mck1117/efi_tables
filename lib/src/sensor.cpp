@@ -25,6 +25,7 @@ bool Sensor::Register()
 {
     constexpr size_t len = sizeof(s_sensorRegistry) / sizeof(s_sensorRegistry[0]);
 
+    // Clear all entries
     for(size_t i = 0; i < len; i++)
     {
         s_sensorRegistry[i] = nullptr;
@@ -40,9 +41,7 @@ bool Sensor::Register()
         return nullptr;
     }
 
-    const Sensor* entry = s_sensorRegistry[index];
-
-    return entry;
+    return s_sensorRegistry[index];
 }
 
 /*static*/ SensorResult Sensor::Get(SensorType type)
@@ -51,10 +50,12 @@ bool Sensor::Register()
 
     if (s)
     {
+        // If we found the sensor, ask it for a result.
         return s->Get();
     }
     else
     {
+        // If we didn't find the sensor - indicate that
         return { false, 0 };
     }
 }
