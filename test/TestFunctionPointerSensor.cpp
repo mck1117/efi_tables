@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-class FunctionPointerSensorTest : public ::testing::Test
+class SensorFunctionPointer : public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -21,7 +21,7 @@ float testFunc()
     return 23;
 }
 
-TEST_F(FunctionPointerSensorTest, TestValue)
+TEST_F(SensorFunctionPointer, TestValue)
 {
     FunctionPointerSensor dut(SensorType::Clt, testFunc);
     dut.Register();

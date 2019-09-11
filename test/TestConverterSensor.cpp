@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-class ConvertedSensorTest : public ::testing::Test
+class SensorConverted : public ::testing::Test
 {
 protected:
     void SetUp() override
@@ -31,7 +31,7 @@ protected:
     }
 };
 
-TEST_F(ConvertedSensorTest, TestValid)
+TEST_F(SensorConverted, TestValid)
 {
     DoublerConverterSensor dut;
     dut.Register();
@@ -52,7 +52,7 @@ TEST_F(ConvertedSensorTest, TestValid)
     }
 }
 
-TEST_F(ConvertedSensorTest, TestInvalid)
+TEST_F(SensorConverted, TestInvalid)
 {
     DoublerConverterSensor dut;
     dut.Register();

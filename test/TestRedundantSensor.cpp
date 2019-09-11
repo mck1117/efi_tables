@@ -4,13 +4,13 @@
 
 #include "mock/mock_sensor.h"
 
-class TestRedundantSensor : public ::testing::Test
+class SensorRedundant : public ::testing::Test
 {
 protected:
 	RedundantSensor dut;
 	MockSensor m1, m2;
 
-	TestRedundantSensor()
+	SensorRedundant()
 		: dut(SensorType::Tps1, SensorType::Tps1Primary, SensorType::Tps1Secondary, 5.0f, false)
 		, m1(SensorType::Tps1Primary)
 		, m2(SensorType::Tps1Secondary)
@@ -33,7 +33,7 @@ protected:
 	}
 };
 
-TEST_F(TestRedundantSensor, SetOnlyOneSensor)
+TEST_F(SensorRedundant, SetOnlyOneSensor)
 {
 	// Don't set any sensors - expect invalid
 	{
@@ -51,7 +51,7 @@ TEST_F(TestRedundantSensor, SetOnlyOneSensor)
 	}
 }
 
-TEST_F(TestRedundantSensor, SetTwoSensors)
+TEST_F(SensorRedundant, SetTwoSensors)
 {
 	// Don't set any sensors - expect invalid
 	{
@@ -72,7 +72,7 @@ TEST_F(TestRedundantSensor, SetTwoSensors)
 	}
 }
 
-TEST_F(TestRedundantSensor, DifferenceNone)
+TEST_F(SensorRedundant, DifferenceNone)
 {
 	// Set both sensors to the same value
 	m1.Set(10);
@@ -86,7 +86,7 @@ TEST_F(TestRedundantSensor, DifferenceNone)
 	}
 }
 
-TEST_F(TestRedundantSensor, DifferenceNearLimit)
+TEST_F(SensorRedundant, DifferenceNearLimit)
 {
 	// Set both sensors to nearly the limit (4.998 apart)
 	m1.Set(7.501);
@@ -100,7 +100,7 @@ TEST_F(TestRedundantSensor, DifferenceNearLimit)
 	}
 }
 
-TEST_F(TestRedundantSensor, DifferenceOverLimit)
+TEST_F(SensorRedundant, DifferenceOverLimit)
 {
 	// Set both sensors barely over the limit (5.002 apart)
 	m1.Set(7.499);
@@ -113,7 +113,7 @@ TEST_F(TestRedundantSensor, DifferenceOverLimit)
 	}
 }
 
-TEST_F(TestRedundantSensor, DifferenceOverLimitSwapped)
+TEST_F(SensorRedundant, DifferenceOverLimitSwapped)
 {
 	// Now try it the other way (m1 > m2)
 	m1.Set(12.501);
@@ -127,13 +127,13 @@ TEST_F(TestRedundantSensor, DifferenceOverLimitSwapped)
 }
 
 
-class TestRedundantSensorIgnoreSecond : public ::testing::Test
+class SensorRedundantIgnoreSecond : public ::testing::Test
 {
 protected:
 	RedundantSensor dut;
 	MockSensor m1, m2;
 
-	TestRedundantSensorIgnoreSecond()
+	SensorRedundantIgnoreSecond()
 		: dut(SensorType::Tps1, SensorType::Tps1Primary, SensorType::Tps1Secondary, 5.0f, true)
 		, m1(SensorType::Tps1Primary)
 		, m2(SensorType::Tps1Secondary)
@@ -156,7 +156,7 @@ protected:
 	}
 };
 
-TEST_F(TestRedundantSensorIgnoreSecond, OnlyFirst)
+TEST_F(SensorRedundantIgnoreSecond, OnlyFirst)
 {
 	// Don't set any sensors - expect invalid
 	{
@@ -175,7 +175,7 @@ TEST_F(TestRedundantSensorIgnoreSecond, OnlyFirst)
 	}
 }
 
-TEST_F(TestRedundantSensorIgnoreSecond, OnlySecond)
+TEST_F(SensorRedundantIgnoreSecond, OnlySecond)
 {
 	// Don't set any sensors - expect invalid
 	{
@@ -193,7 +193,7 @@ TEST_F(TestRedundantSensorIgnoreSecond, OnlySecond)
 	}
 }
 
-TEST_F(TestRedundantSensorIgnoreSecond, SetBothIgnoreSecond)
+TEST_F(SensorRedundantIgnoreSecond, SetBothIgnoreSecond)
 {
 	// Don't set any sensors - expect invalid
 	{
