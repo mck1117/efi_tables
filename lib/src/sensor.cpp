@@ -1,6 +1,17 @@
 #include <efi/sensor/sensor.h>
 
-static Sensor* s_sensorRegistry[static_cast<size_t>(SensorType::PlaceholderLast)] = {};
+// This struct represents one sensor in the registry.
+// It stores whether the sensor should use a mock value,
+// the value to use, and if not a pointer to the sensor that
+// can provide a real value.
+struct SensorRegistryEntry
+{
+    bool UseMock;
+    float MockValue;
+    Sensor* Sensor;
+};
+
+static SensorRegistryEntry s_sensorRegistry[static_cast<size_t>(SensorType::PlaceholderLast)] = {};
 
 bool Sensor::Register()
 {
@@ -8,15 +19,15 @@ bool Sensor::Register()
     auto& entry = s_sensorRegistry[GetIndex()];
 
     // If there's somebody already here - a consumer tried to double-register a sensor
-    if (entry)
+    if (entry.Sensor)
     {
-        // uhh, somebody already registered this sensor?
+        // This sensor has already been registered. Don't re-register it.
         return false;
     }
     else
     {
         // put ourselves in the registry
-        s_sensorRegistry[GetIndex()] = this;
+        s_sensorRegistry[GetIndex()].Sensor = this;
         return true;
     }
 }
@@ -26,13 +37,16 @@ bool Sensor::Register()
     constexpr size_t len = sizeof(s_sensorRegistry) / sizeof(s_sensorRegistry[0]);
 
     // Clear all entries
-    for(size_t i = 0; i < len; i++)
+    for (size_t i = 0; i < len; i++)
     {
-        s_sensorRegistry[i] = nullptr;
+        auto& entry = s_sensorRegistry[i];
+
+        entry.Sensor = nullptr;
+        entry.MockValue = 0.0f;
     }
 }
 
-/*static*/ const Sensor* Sensor::GetSensorOfType(SensorType type)
+/*static*/ SensorRegistryEntry* Sensor::GetEntryForType(SensorType type)
 {
     size_t index = GetIndex(type);
     // Check that we didn't get garbage
@@ -41,21 +55,75 @@ bool Sensor::Register()
         return nullptr;
     }
 
-    return s_sensorRegistry[index];
+    return &s_sensorRegistry[index];
+}
+
+/*static*/ const Sensor* Sensor::GetSensorOfType(SensorType type)
+{
+    auto entry = GetEntryForType(type);
+    return entry ? entry->Sensor : nullptr;
 }
 
 /*static*/ SensorResult Sensor::Get(SensorType type)
 {
-    const Sensor* s = GetSensorOfType(type);
+    const auto entry = GetEntryForType(type);
 
+    // Check if this is a valid sensor entry
+    if (!entry)
+    {
+        // TODO: warning here
+        return { false, 0.0f };
+    }
+
+    // Next check for mock
+    if (entry->UseMock)
+    {
+        return { true, entry->MockValue };
+    }
+
+    // Get the sensor out of the entry
+    const Sensor* s = entry->Sensor;
     if (s)
     {
         // If we found the sensor, ask it for a result.
         return s->Get();
     }
-    else
+
+    // We've exhausted all valid ways to return something - sensor not found.
+    return { false, 0 };
+}
+
+/*static*/ void Sensor::SetMockValue(SensorType type, float value)
+{
+    auto entry = GetEntryForType(type);
+
+    if (entry)
     {
-        // If we didn't find the sensor - indicate that
-        return { false, 0 };
+        entry->MockValue = value;
+        entry->UseMock = true;
+    }
+}
+
+/*static*/ void Sensor::ResetMockValue(SensorType type)
+{
+    auto entry = GetEntryForType(type);
+
+    if (entry)
+    {
+        entry->UseMock = false;
+    }
+}
+
+/*static*/ void Sensor::ResetAllMocks()
+{
+
+    constexpr size_t len = sizeof(s_sensorRegistry) / sizeof(s_sensorRegistry[0]);
+
+    // Reset all mocks
+    for (size_t i = 0; i < len; i++)
+    {
+        auto& entry = s_sensorRegistry[i];
+
+        entry.UseMock = false;
     }
 }

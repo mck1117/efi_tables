@@ -8,13 +8,16 @@ struct SensorResult
     const float Value;
 };
 
+// Fwd declare
+struct SensorRegistryEntry;
+
 class Sensor
 {
 public:
     // Register this sensor in the sensor registry.
     // Returns true if registration succeeded, or false if
     // another sensor of the same type is already registered.
-    bool Register();
+    [[nodiscard]] bool Register();
 
     // Remove all sensors from the sensor registry - tread carefully if you use this outside of a unit test
     static void ResetRegistry();
@@ -29,7 +32,23 @@ public:
      */
     static SensorResult Get(SensorType type);
 
+    /*
+     * Mock a value for a particular sensor.
+     */
+    static void SetMockValue(SensorType type, float value);
+
+    /*
+     * Reset mock for a particular sensor.
+     */
+    static void ResetMockValue(SensorType type);
+
+    /*
+     * Reset mocking for all sensors.
+     */
+    static void ResetAllMocks();
+
 protected:
+    // Protected constructor - only subclasses call this
     Sensor(SensorType type)
         : m_type(type)
     {
@@ -39,7 +58,7 @@ private:
     // Retrieve the current reading from the sensor.
     //
     // Override this in a particular sensor's implementation.  As reading sensors is in many hot paths,
-    // It is unwise to synchronously read the sensor or do anything otherwise costly here.  At the most,
+    // it is unwise to synchronously read the sensor or do anything otherwise costly here.  At the most,
     // this should be field lookup and simple math.
     virtual SensorResult Get() const = 0;
 
@@ -56,4 +75,9 @@ private:
     {
         return static_cast<size_t>(type);
     }
+
+    /*
+     * Static helper for sensor lookup
+     */
+    static SensorRegistryEntry* GetEntryForType(SensorType type);
 };
