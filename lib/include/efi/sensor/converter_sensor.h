@@ -1,3 +1,5 @@
+#pragma once
+
 #include <efi/sensor/stored_value_sensor.h>
 #include <efi/function.h>
 

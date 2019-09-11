@@ -1,3 +1,5 @@
+#pragma once
+
 #include <efi/sensor/sensor.h>
 
 /* This class is intended as a bridge to bridge from old getMySensor() functions
