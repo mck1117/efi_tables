@@ -7,10 +7,6 @@ enum class SensorType : uint8_t
     Invalid = 0,
     Clt,
     Iat,
-    MapBank1,
-    MapBank2,
-    LambdaBank1,
-    LambdaBank2,
 
     // This is the "resolved" position, potentially composited out of the following two
     Tps1,
