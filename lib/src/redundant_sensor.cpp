@@ -14,10 +14,10 @@ SensorResult RedundantSensor::Get() const
 	// If we're set to disable redundancy, just pass thru the first sensor
 	if (m_ignoreSecond)
 	{
-		return Sensor::Get(m_first);
+		return result1;
 	}
 
-	auto result2 = Sensor::Get(m_second);
+    auto result2 = Sensor::Get(m_second);
 
 	// If either result is invalid, return invalid.
 	if (!result1.Valid || !result2.Valid)
