@@ -89,8 +89,8 @@ TEST_F(SensorRedundant, DifferenceNone)
 TEST_F(SensorRedundant, DifferenceNearLimit)
 {
 	// Set both sensors to nearly the limit (4.998 apart)
-	m1.Set(7.501);
-	m2.Set(12.499);
+	m1.Set(7.501f);
+	m2.Set(12.499f);
 
 	// Expect valid, and 10 output
 	{
@@ -103,8 +103,8 @@ TEST_F(SensorRedundant, DifferenceNearLimit)
 TEST_F(SensorRedundant, DifferenceOverLimit)
 {
 	// Set both sensors barely over the limit (5.002 apart)
-	m1.Set(7.499);
-	m2.Set(12.501);
+	m1.Set(7.499f);
+	m2.Set(12.501f);
 
 	// Expect invalid
 	{
@@ -116,8 +116,8 @@ TEST_F(SensorRedundant, DifferenceOverLimit)
 TEST_F(SensorRedundant, DifferenceOverLimitSwapped)
 {
 	// Now try it the other way (m1 > m2)
-	m1.Set(12.501);
-	m2.Set(7.499);
+	m1.Set(12.501f);
+	m2.Set(7.499f);
 
 	// Expect invalid
 	{
