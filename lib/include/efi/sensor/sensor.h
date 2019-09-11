@@ -11,9 +11,6 @@ struct SensorResult
 class Sensor
 {
 public:
-    // Get the value of the sensor
-    virtual SensorResult Get() const = 0;
-
     // Register this sensor in the sensor registry.
     // Returns true if registration succeeded, or false if there was an error.
     bool Register();
@@ -38,6 +35,13 @@ protected:
     }
 
 private:
+    // Retrieve the current reading from the sensor.
+    //
+    // Override this in a particular sensor's implementation.  As reading sensors is in many hot paths,
+    // It is unwise to synchronously read the sensor or do anything otherwise costly here.  At the most,
+    // this should be field lookup and simple math.
+    virtual SensorResult Get() const = 0;
+
     SensorType m_type;
 
     // Get this sensor's index in the list
