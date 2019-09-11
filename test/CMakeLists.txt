@@ -13,6 +13,7 @@ target_sources(tests
         TestSensorReader.cpp
         TestConverterSensor.cpp
         TestFunctionPointerSensor.cpp
+        TestRedundantSensor.cpp
 
         mock/mock_sensor.h
 )

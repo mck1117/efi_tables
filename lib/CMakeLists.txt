@@ -5,6 +5,7 @@ target_sources(lib
     PRIVATE
         src/stub.cpp
         src/sensor.cpp
+        src/redundant_sensor.cpp
 
         include/efi/interpolate.h
         include/efi/function.h
@@ -21,6 +22,7 @@ target_sources(lib
         include/efi/sensor/stored_value_sensor.h
         include/efi/sensor/converter_sensor.h
         include/efi/sensor/function_pointer_sensor.h
+        include/efi/sensor/redundant_sensor.h
 )
 
 target_include_directories(lib
