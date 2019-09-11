@@ -17,6 +17,8 @@ public:
     {
         float result = m_func();
 
+        // TODO: valid = cisnan(result)
+
         return { true, result };
     }
 

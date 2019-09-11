@@ -12,7 +12,8 @@ class Sensor
 {
 public:
     // Register this sensor in the sensor registry.
-    // Returns true if registration succeeded, or false if there was an error.
+    // Returns true if registration succeeded, or false if
+    // another sensor of the same type is already registered.
     bool Register();
 
     // Remove all sensors from the sensor registry - tread carefully if you use this outside of a unit test
