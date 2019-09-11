@@ -6,9 +6,9 @@
 // can provide a real value.
 struct SensorRegistryEntry
 {
-    bool UseMock;
-    float MockValue;
-    Sensor* Sensor;
+    bool useMock;
+    float mockValue;
+    Sensor* sensor;
 };
 
 static SensorRegistryEntry s_sensorRegistry[static_cast<size_t>(SensorType::PlaceholderLast)] = {};
@@ -19,7 +19,7 @@ bool Sensor::Register()
     auto& entry = s_sensorRegistry[GetIndex()];
 
     // If there's somebody already here - a consumer tried to double-register a sensor
-    if (entry.Sensor)
+    if (entry.sensor)
     {
         // This sensor has already been registered. Don't re-register it.
         return false;
@@ -27,7 +27,7 @@ bool Sensor::Register()
     else
     {
         // put ourselves in the registry
-        s_sensorRegistry[GetIndex()].Sensor = this;
+        s_sensorRegistry[GetIndex()].sensor = this;
         return true;
     }
 }
@@ -41,8 +41,8 @@ bool Sensor::Register()
     {
         auto& entry = s_sensorRegistry[i];
 
-        entry.Sensor = nullptr;
-        entry.MockValue = 0.0f;
+        entry.sensor = nullptr;
+        entry.mockValue = 0.0f;
     }
 }
 
@@ -61,7 +61,7 @@ bool Sensor::Register()
 /*static*/ const Sensor* Sensor::GetSensorOfType(SensorType type)
 {
     auto entry = GetEntryForType(type);
-    return entry ? entry->Sensor : nullptr;
+    return entry ? entry->sensor : nullptr;
 }
 
 /*static*/ SensorResult Sensor::Get(SensorType type)
@@ -76,13 +76,13 @@ bool Sensor::Register()
     }
 
     // Next check for mock
-    if (entry->UseMock)
+    if (entry->useMock)
     {
-        return { true, entry->MockValue };
+        return { true, entry->mockValue };
     }
 
     // Get the sensor out of the entry
-    const Sensor* s = entry->Sensor;
+    const Sensor* s = entry->sensor;
     if (s)
     {
         // If we found the sensor, ask it for a result.
@@ -99,8 +99,8 @@ bool Sensor::Register()
 
     if (entry)
     {
-        entry->MockValue = value;
-        entry->UseMock = true;
+        entry->mockValue = value;
+        entry->useMock = true;
     }
 }
 
@@ -110,13 +110,12 @@ bool Sensor::Register()
 
     if (entry)
     {
-        entry->UseMock = false;
+        entry->useMock = false;
     }
 }
 
 /*static*/ void Sensor::ResetAllMocks()
 {
-
     constexpr size_t len = sizeof(s_sensorRegistry) / sizeof(s_sensorRegistry[0]);
 
     // Reset all mocks
@@ -124,6 +123,6 @@ bool Sensor::Register()
     {
         auto& entry = s_sensorRegistry[i];
 
-        entry.UseMock = false;
+        entry.useMock = false;
     }
 }

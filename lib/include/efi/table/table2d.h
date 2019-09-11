@@ -4,6 +4,7 @@
 
 #include <efi/table/table_bin.h>
 #include <efi/function.h>
+#include <efi/interpolate.h>
 
 /**
  * @brief Provides a single-input, single-output lookup table.

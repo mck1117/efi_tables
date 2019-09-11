@@ -1,6 +1,7 @@
 #pragma once
 
 #include <efi/sensor/sensor_type.h>
+#include <cstddef>
 
 struct SensorResult
 {
