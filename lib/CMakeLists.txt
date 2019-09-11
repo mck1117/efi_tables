@@ -3,7 +3,6 @@ add_library(lib STATIC)
 
 target_sources(lib
     PRIVATE
-        src/stub.cpp
         src/sensor.cpp
         src/redundant_sensor.cpp
 
