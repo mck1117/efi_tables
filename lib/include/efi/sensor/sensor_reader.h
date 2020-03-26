@@ -2,11 +2,35 @@
 
 #include <efi/sensor/sensor.h>
 
+
+
+typedef float temperature_t;
+typedef int pressure_t;
+
+
+
+
+template <SensorType TSensorType>
+struct SensorTypeLookup
+{
+    using type = float;
+};
+
+#define SET_SENSOR_TYPE(sensor, typeName) template<> struct SensorTypeLookup<SensorType::sensor> { using type = typeName; }
+
+SET_SENSOR_TYPE(Clt, temperature_t);
+SET_SENSOR_TYPE(Iat, temperature_t);
+
+
+
+
 template <SensorType TSensorType>
 class SensorReader final
 {
 public:
-    SensorReader(float defaultValue) : m_defaultValue(defaultValue) { }
+    using SensorValueType = typename SensorTypeLookup<TSensorType>::type;
+
+    SensorReader(SensorValueType defaultValue) : m_defaultValue(defaultValue) { }
 
     SensorResult Get() const
     {
@@ -16,13 +40,13 @@ public:
     // Get the sensor's reading, or a default value.
     // Inteded for applications where a default may be used silently,
     // while elsewhere in the world the failed sensor is otherwise handled.
-    float GetOrDefault() const
+    SensorValueType GetOrDefault() const
     {
         auto result = Get();
 
         if (result.Valid)
         {
-            return result.Value;
+            return (SensorValueType)result.Value;
         }
         else
         {
@@ -30,5 +54,5 @@ public:
         }
     }
 private:
-    const float m_defaultValue;
+    const SensorValueType m_defaultValue;
 };
