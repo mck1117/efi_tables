@@ -3,5 +3,5 @@
 template <class TReturn, class... TArgs>
 struct Function
 {
-    [[nodiscard]] virtual TReturn operator()(TArgs... args) const = 0;
+    [[nodiscard]] virtual TReturn get(TArgs... args) const = 0;
 };

@@ -11,7 +11,6 @@ target_sources(lib
         include/efi/ratio_helper.h
         include/efi/table/table_bin.h
         include/efi/table/table_bin_array.h
-        include/efi/table/table.h
         include/efi/table/table2d.h
         include/efi/table/table3d.h
 
